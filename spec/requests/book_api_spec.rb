@@ -44,4 +44,20 @@ describe 'Book API' do
     expect(content["messages"]).to eq("Succesfully updated book #{book_2.id} to Civil War")
     expect(updated_book_2.title).to eq("Civil War")
   end
+
+  it "deletes a book" do
+    book_1 = Book.create(title: "Infinity War", author: "Thanos")
+    book_2 = Book.create(title: "Age of Ultron", author: "Ultron")
+    book_3 = Book.create(title: "Avengers", author: "Loki")
+
+    expect(Book.count).to eq(3)
+    delete "/api/v1/books/#{book_2.id}"
+
+    content = JSON.parse(response.body)
+
+    expect(response.status).to eq(200)
+    expect(content["messages"]).to eq("Successfully deleted book")
+    expect(Book.count).to eq(2)
+  end
+
 end
