@@ -7,4 +7,9 @@ class Api::V1::BooksController < ApplicationController
       books: books
     }
   end
+
+  def show
+    book = Book.find(params[:id])
+    render status:200,json: book
+  end
 end
