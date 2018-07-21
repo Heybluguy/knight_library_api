@@ -15,18 +15,28 @@ class Api::V1::BooksController < ApplicationController
 
   def update
     book = Book.find(params[:id])
-    book.update(book_params)
-    render status: 202, json: {
-      messages: "Succesfully updated book #{book.id} to #{book.title}"
-    }
+    if book.update(book_params)
+      render status: 202, json: {
+        messages: "Succesfully updated book #{book.id} to #{book.title}"
+      }
+    else
+      render status: 400, json: {
+        messages: "Something went wrong"
+      }
+    end
   end
 
   def destroy
     book = Book.find(params[:id])
-    book.delete
-    render status: 200, json: {
-      messages: "Successfully deleted book"
-    }
+    if book.delete
+      render status: 200, json: {
+        messages: "Successfully deleted book"
+      }
+    else
+      render status: 400, json: {
+        messages: "Something went wrong"
+      }
+    end
   end
 
     private
