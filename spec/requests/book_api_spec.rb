@@ -29,4 +29,19 @@ describe 'Book API' do
     expect(content["title"]).to eq("Age of Ultron")
     expect(content["author"]).to eq("Ultron")
   end
+
+  it 'updates a single book' do
+    book_1 = Book.create(title: "Infinity War", author: "Thanos")
+    book_2 = Book.create(title: "Age of Ultron", author: "Ultron")
+    book_3 = Book.create(title: "Avengers", author: "Loki")
+
+    put "/api/v1/books/#{book_2.id}", params: {book: {title: 'Civil War'}}
+
+    content = JSON.parse(response.body)
+    updated_book_2 = Book.find(book_2.id)
+
+    expect(response.status).to eq(202)
+    expect(content["messages"]).to eq("Succesfully updated book #{book_2.id} to Civil War")
+    expect(updated_book_2.title).to eq("Civil War")
+  end
 end

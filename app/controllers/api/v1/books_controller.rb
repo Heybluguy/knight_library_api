@@ -10,6 +10,20 @@ class Api::V1::BooksController < ApplicationController
 
   def show
     book = Book.find(params[:id])
-    render status:200,json: book
+    render status: 200, json: book
   end
+
+  def update
+    book = Book.find(params[:id])
+    book.update(book_params)
+    render status: 202, json: {
+      messages: "Succesfully updated book #{book.id} to #{book.title}"
+    }
+  end
+
+    private
+      def book_params
+        params.require(:book).permit(:title, :author)
+      end
+
 end
